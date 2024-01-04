@@ -1,5 +1,6 @@
 const express = require("express");
 const Student = require("../Models/StudentModel");
+const Batch = require("../Models/BatchModel");
 const studentController = express.Router();
 
 // create a new Student
@@ -15,6 +16,18 @@ studentController.post("/", async (req, res) => {
     res.status(200).json(newStudent);
   } catch (err) {
     res.status(500).send(err.errors[0].message);
+  }
+});
+studentController.get("/", async (req, res) => {
+  try {
+    const students = await Student.findAll();
+    if (students === null) {
+      res.status(404).send("student not found");
+    } else {
+      res.status(200).send(JSON.stringify(students, null, 2));
+    }
+  } catch (err) {
+    res.status(500).send("invalid");
   }
 });
 // Get all students in a particular batch
@@ -39,6 +52,10 @@ studentController.get("/", async (req, res) => {
 // Get one student by studentid
 studentController.get("/:id", async (req, res) => {
   try {
+    // Batch.hasMany(Student, {
+    //   foreignKey: "batchId",
+    // });
+    // Student.belongsTo(Batch);
     const { id } = req.params;
     const student = await Student.findOne({
       where: {

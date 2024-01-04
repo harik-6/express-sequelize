@@ -2,6 +2,7 @@ const express = require("express");
 const { connectToDB } = require("./db");
 const studentController = require("./Controllers/StudentController");
 const bodyParser = require("body-parser");
+const batchController = require("./Controllers/BatchController");
 
 const app = express();
 
@@ -14,3 +15,4 @@ app.listen(port, () => {
 
 app.use(bodyParser.json());
 app.use("/student", studentController);
+app.use("/batch", batchController);
