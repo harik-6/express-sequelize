@@ -1,24 +1,23 @@
 const express = require("express");
 const Student = require("../Models/StudentModel");
 const Batch = require("../Models/BatchModel");
-const studentController = express.Router();
-
 // create a new Student
-studentController.post("/", async (req, res) => {
+
+const create = async (req, res) => {
   try {
-    const { firstname, email, batchId } = req.body;
+    const { name, email, batchId } = req.body;
     const newStudent = await Student.create({
-      firstname,
+      name,
       email,
       batchId,
     });
-
     res.status(200).json(newStudent);
   } catch (err) {
-    res.status(500).send(err.errors[0].message);
+    res.status(500).send(err);
   }
-});
-studentController.get("/", async (req, res) => {
+};
+
+const allStudents = async (req, res) => {
   try {
     const students = await Student.findAll();
     if (students === null) {
@@ -29,9 +28,9 @@ studentController.get("/", async (req, res) => {
   } catch (err) {
     res.status(500).send("invalid");
   }
-});
-// Get all students in a particular batch
-studentController.get("/", async (req, res) => {
+};
+
+const getStudentsOfBatch = async (req, res) => {
   try {
     const batchId = req.query.batchId;
     //   console.log(req.query);
@@ -48,14 +47,10 @@ studentController.get("/", async (req, res) => {
   } catch (err) {
     res.status(500).send("invalid");
   }
-});
-// Get one student by studentid
-studentController.get("/:id", async (req, res) => {
+};
+
+const getStudent = async (req, res) => {
   try {
-    // Batch.hasMany(Student, {
-    //   foreignKey: "batchId",
-    // });
-    // Student.belongsTo(Batch);
     const { id } = req.params;
     const student = await Student.findOne({
       where: {
@@ -70,6 +65,10 @@ studentController.get("/:id", async (req, res) => {
   } catch (err) {
     res.status(500).send("invalid");
   }
-});
+};
 
-module.exports = studentController;
+module.exports = {
+  create: create,
+  getStudent: getStudent,
+  allStudents: allStudents,
+};

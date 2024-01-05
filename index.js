@@ -1,8 +1,8 @@
 const express = require("express");
-const { connectToDB } = require("./db");
-const studentController = require("./Controllers/StudentController");
 const bodyParser = require("body-parser");
-const batchController = require("./Controllers/BatchController");
+const { connectToDB } = require("./db");
+const studentsRoutes = require("./Routes/student");
+const batchRoutes = require("./Routes/batch");
 
 const app = express();
 
@@ -14,5 +14,5 @@ app.listen(port, () => {
 });
 
 app.use(bodyParser.json());
-app.use("/student", studentController);
-app.use("/batch", batchController);
+app.use("/student", studentsRoutes);
+app.use("/batch", batchRoutes);
