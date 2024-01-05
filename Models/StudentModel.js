@@ -9,10 +9,6 @@ const Student = sequelize.define("Student", {
     type: DataTypes.STRING,
     unique: true,
   },
-  studentId: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-  },
   batchId: {
     type: DataTypes.NUMBER,
   },
