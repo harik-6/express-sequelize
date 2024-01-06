@@ -1,17 +1,25 @@
 const express = require("express");
 const Student = require("../Models/StudentModel");
 const Batch = require("../Models/BatchModel");
+const RankCard = require("../Models/RanCardModel");
 // create a new Student
 
 const create = async (req, res) => {
   try {
-    const { name, email, batchId } = req.body;
+    const { name, email, batchId, rankCard } = req.body;
     const newStudent = await Student.create({
       name,
       email,
       batchId,
     });
-    res.status(200).json(newStudent);
+    const newRankCard = await RankCard.create({
+      ...rankCard,
+      StudentId: newStudent["id"]
+    })
+    res.status(200).json({
+      ...newStudent["dataValues"],
+      rankCard: newRankCard
+    });
   } catch (err) {
     res.status(500).send(err);
   }
@@ -56,6 +64,7 @@ const getStudent = async (req, res) => {
       where: {
         id: id,
       },
+      include: "RankCard"
     });
     if (student === null) {
       res.status(404).send("student not found");

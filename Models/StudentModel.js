@@ -1,4 +1,5 @@
 const { sequelize, DataTypes } = require("../db");
+const RankCard = require("./RanCardModel");
 
 const Student = sequelize.define("Student", {
   name: {
@@ -13,4 +14,7 @@ const Student = sequelize.define("Student", {
     type: DataTypes.NUMBER,
   },
 });
+
+Student.hasOne(RankCard);
+
 module.exports = Student;
